@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,19 +19,29 @@ class MemberRepositoryV0Test {
     @Test
     void crud() throws SQLException {
         // save
-        Member member = new Member("memberV2", 10000);
+        Member member = new Member("memberV7", 10000);
         repository.save(member);
 
         // findById
         Member findMember = repository.findById(member.getMemberId());
         log.info("findMember = {}", findMember);
-        log.info("member == findMember {}", member == findMember);
-        log.info("member equals findMember {}", member.equals(findMember));
-        /**
-         * @Data Annotation 이 equals and hashcode 를 만들어준다.
-         * -> 3번 째 equals() 가 true 로 나오는 이유.
-         * assertThat().isEqualTo(); 내부에서 equals() 사용하기 때문에 테스트가 통과하게 된다.
-         */
         assertThat(findMember).isEqualTo(member);
+
+        // update: money: 10000 -> 20000
+        repository.update(member.getMemberId(), 20000);
+        Member updatedMember = repository.findById(member.getMemberId());
+        assertThat(updatedMember.getMoney()).isEqualTo(20000);
+
+        // delete
+        repository.delete(member.getMemberId());
+        assertThatThrownBy(() -> repository.findById(member.getMemberId()))
+                .isInstanceOf(NoSuchElementException.class);
+
+        /**
+         * 테스트는 반복이 되는 것이 매우 중요하다 !!
+         * 위와 같이 CRUD 로 구성되면 반복이 가능하다 !!!
+         * 하지만, 중간에 Exception 이 있으면 delete 가 호출되지 않을 수 있다.
+         * 그러므로 delete 를 마지막에 호출하는 것도 궁극적인 호출 방법이 아니다.
+         */
     }
 }
