@@ -9,3 +9,8 @@ inflearn 김영한님의 DB - 데이터 접근 핵심 원리
 
 ### 2023-05-30 (화)
 - JDBC 개발 - 수정&삭제
+
+### 2023-05-31 (수)
+- DataSource 이해
+- DataSource 예제 1
+- DataSource 예제 2
