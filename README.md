@@ -14,3 +14,7 @@ inflearn 김영한님의 DB - 데이터 접근 핵심 원리
 - DataSource 이해
 - DataSource 예제 1
 - DataSource 예제 2
+
+### 2023-06-04 (일)
+- DataSource 적용
+- 정리
